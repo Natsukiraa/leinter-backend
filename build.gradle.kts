@@ -27,6 +27,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   implementation("org.springframework.boot:spring-boot-starter-logging")
+  implementation("com.google.cloud.sql:postgres-socket-factory:1.17.1")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   runtimeOnly("org.postgresql:postgresql:42.7.8")
