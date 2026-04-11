@@ -19,3 +19,6 @@ steps:
 
 images:
   - 'europe-west1-docker.pkg.dev/$PROJECT_ID/leinter-backend/api-leitner:$COMMIT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
