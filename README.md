@@ -1,20 +1,23 @@
 # Clean Code
 
 ## Membres de l'équipe
-GAZIO Maël
-PHE Lina
-TECHER Mathis
+- GAZIO Maladie (Maël) 🦠
+- PHE Lina 🐱
+- TECHER Mathis 🤖
 
-## Organisation du travail
+## Déploiement du projet 
 
-Pour ce projet, nous avons fait beaucoup de "mob programming". C'est à dire que nous avons fait des sessions de codage ensemble, alternant entre les deux développeurs. 
+### Prérequis
+- Java 17 
 
-## Lancement du projet
+### Variables d'environnement
+| Nom de la variable | Description |
+|--------------------|-------------|
+| `DB_URL`           | URL de la base de données (ex: `jdbc:mysql://localhost:3306/clean_code_db`) |
+| `DB_USERNAME`      | Nom d'utilisateur de la base de données |
+| `DB_PASSWORD`      | Mot de passe de la base de données |
 
-Pour lancer le projet, il faut cloner le dépôt backend et "docker compose up" pour lancer la base de donnée PGSQL.
-Ensuite, pour lancer le projet kotlin, il faut utiliser Inteliji.
-Pour lancer le front, il faut faire "npm i" et "npm run dev"
+### Déploiement 
 
-## Schémas
-
-Les schémas sont présents avec le rendu myges.
+Les déploiments sont réalisés automatiquement via Cloud build et Cloud Run a chaque push sur main.
+Grâce a un déclencheur, et au fichier `cloudbuild.yaml` présent à la racine du projet, le projet est automatiquement construit et déployé sur Cloud Run.
