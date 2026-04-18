@@ -3,6 +3,7 @@ package com.esgi.leitnerbackend.cards.domain.service
 import com.esgi.leitnerbackend.cards.domain.model.Card
 import com.esgi.leitnerbackend.cards.domain.port.input.*
 import com.esgi.leitnerbackend.cards.domain.port.output.CardRepositoryPort
+import com.esgi.leitnerbackend.cards.domain.port.output.CloudTaskPort
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -10,7 +11,9 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 @Service
-class CardService(private val cardRepositoryPort: CardRepositoryPort) : AnswerCardUseCase, GetAllCardsUseCase, GetQuizCardsUseCase, CreateCardUseCase, GetCardUseCase {
+class CardService(
+  private val cardRepositoryPort: CardRepositoryPort, private val cloudTaskPort: CloudTaskPort
+) : AnswerCardUseCase, GetAllCardsUseCase, GetQuizCardsUseCase, CreateCardUseCase, GetCardUseCase {
   override fun answerCard(answerCardCommand: AnswerCardCommand) {
     val flashcard: Card = this.getCard(answerCardCommand.cardId)
 
@@ -73,6 +76,8 @@ class CardService(private val cardRepositoryPort: CardRepositoryPort) : AnswerCa
       tag = createCardCommand.tag
     )
 
-    return cardRepositoryPort.save(card)
+    val savedCard = cardRepositoryPort.save(card)
+    cloudTaskPort.scheduleCardCreatedTask(savedCard)
+    return savedCard
   }
 }

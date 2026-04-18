@@ -3,6 +3,7 @@ package com.esgi.leitnerbackend.cards.domain.service
 import com.esgi.leitnerbackend.cards.domain.model.Card
 import com.esgi.leitnerbackend.cards.domain.port.input.CreateCardCommand
 import com.esgi.leitnerbackend.cards.domain.port.output.CardRepositoryPort
+import com.esgi.leitnerbackend.cards.domain.port.output.CloudTaskPort
 import com.esgi.leitnerbackend.cards.helper.TestsHelper
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -20,6 +21,9 @@ import java.time.temporal.ChronoUnit
 class CardServiceTest {
   @Mock
   private lateinit var cardRepositoryPort: CardRepositoryPort
+
+  @Mock
+  private lateinit var cloudTaskPort: CloudTaskPort
 
   @InjectMocks
   private lateinit var cardService: CardService
