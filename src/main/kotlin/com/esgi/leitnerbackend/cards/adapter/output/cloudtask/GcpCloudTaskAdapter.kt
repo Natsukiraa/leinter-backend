@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.tasks.v2.CloudTasksClient
 import com.google.cloud.tasks.v2.HttpMethod
 import com.google.cloud.tasks.v2.HttpRequest
+import com.google.cloud.tasks.v2.OidcToken
 import com.google.cloud.tasks.v2.QueueName
 import com.google.cloud.tasks.v2.Task
 import com.google.protobuf.ByteString
@@ -23,6 +24,7 @@ class GcpCloudTaskAdapter(
   @Value("\${app.cloud-tasks.location}") private val location: String,
   @Value("\${app.cloud-tasks.queue}") private val queue: String,
   @Value("\${app.cloud-tasks.function-url}") private val functionUrl: String,
+  @Value("\${app.cloud-tasks.service-account}") private val serviceAccount: String,
 ) : CloudTaskPort {
 
   private val logger = LoggerFactory.getLogger(GcpCloudTaskAdapter::class.java)
@@ -39,9 +41,15 @@ class GcpCloudTaskAdapter(
       )
     )
 
+    val oidcToken = OidcToken.newBuilder()
+      .setServiceAccountEmail(serviceAccount)
+      .setAudience(functionUrl)
+      .build()
+
     val task = Task.newBuilder().setHttpRequest(
         HttpRequest.newBuilder().setUrl(functionUrl).setHttpMethod(HttpMethod.POST)
-          .setBody(ByteString.copyFromUtf8(payload)).putHeaders("Content-Type", "application/json").build()
+          .setBody(ByteString.copyFromUtf8(payload)).putHeaders("Content-Type", "application/json")
+          .setOidcToken(oidcToken).build()
       ).build()
 
     val createdTask = cloudTasksClient.createTask(queuePath, task)
